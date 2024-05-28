@@ -1,0 +1,32 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicione uma ou mais categorias</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" hx-post="{{ url_for('main.clear_session') }}"></button>
+            </div>
+            <div class="modal-body row align-items-start">
+                <form hx-post="{{ url_for('main.add_cat_to_session') }}" hx-target="#categories-list"
+                    hx-swap='outerHTML' class="flex-row">
+                    {{form.name(placeholder='Nome da Categoria')}}
+
+                    {{ form.hidden_tag() }}
+
+                    <input type="submit" value="Adicionar">
+                </form>
+                <hr>
+                <h5>Categorias Adicionadas: </h5>
+
+                <ul id="categories-list">
+                    <li>Sem categorias ainda</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
