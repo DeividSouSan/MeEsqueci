@@ -1,13 +1,13 @@
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="add-cat-modal modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Adicione uma ou mais categorias</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" hx-post="{{ url_for('main.clear_session') }}"></button>
+                <button type="button" class="close-btn btn-close" data-bs-dismiss="modal" aria-label="Close" hx-post="{{ url_for('main.clear_session') }}"></button>
             </div>
             <div class="modal-body row align-items-start">
                 <form hx-post="{{ url_for('main.add_cat_to_session') }}" hx-target="#categories-list"
-                    hx-swap='outerHTML' class="flex-row">
+                    hx-swap='outerHTML' class="modal-form flex-row">
                     {{form.name(placeholder='Nome da Categoria')}}
 
                     {{ form.hidden_tag() }}
@@ -30,3 +30,26 @@
         </div>
     </div>
 </div>
+
+{% block script %}
+    <script>
+        const modal = document.querySelector('.add-cat-modal');
+        const modalCloseBtn = document.querySelector(".close-btn");
+
+
+        modalCloseBtn.addEventListener('click', () => {
+            const modalForm = modal.querySelector('.modal-form');
+            modalForm.reset();
+
+            const catList = document.querySelector("#categories-list");
+            catList.innerHTML = ""
+
+            const baseListItem = document.createElement('li');
+            baseListItem.innerText = "Não possui caregorias ainda";
+
+            catList.appendChild(baseListItem);
+
+            console.log("supostamente deu certo");
+        })
+    </script>
+{% endblock  %}
