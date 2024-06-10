@@ -25,9 +25,10 @@
 
         <button
             type="button"
-            class=""
-            hx-post="{{ url_for('main.clear_categories') }}"
-            hx-target="html"
+            class="#remove-all-cat-btn"
+            hx-post="{{ url_for('main.remove_all_categories') }}"
+            hx-target=".categories-board-section"
+            hx-swap="innerHTML"
             >
             Remover Todas Categorias
         </button>
@@ -42,7 +43,7 @@
         hx-post="{{ url_for('main.get_all_categories') }}"
         hx-target="this"
         hx-swap="innerHTML"
-        hx-trigger="load from:#save-categories-btn"
+        hx-trigger="load from:#save-categories-btn from:#remove-all-cat-btn"
     >
         {% set categories=categories %}
         {% include'partials/categories-board.html' %}

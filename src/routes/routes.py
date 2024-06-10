@@ -4,6 +4,7 @@ from src.entities.category import Category
 from src.forms.category_form import CategoryForm
 from src.repositories.category_repository import CategoryRepository
 from src.use_cases.get_all_categories import GetAllCategories
+from src.use_cases.remove_all_categories import RemoveAllCategories
 from src.use_cases.save_categories_to_database import SaveCategoriesToDatabase
 
 main_bp = Blueprint("main", __name__)
@@ -52,6 +53,14 @@ def add_cat_to_session():
     )
 
 
+@main_bp.route("/clear_cat_from_session", methods=["POST"])
+def clear_cat_from_session():
+    session["categories"] = []
+    session.modified = True  # Como a lista é uma estrutura mutável, acaba que o flask não percebe que o conteúdo da lista foi modificado pois ela permanece sendo uma lista
+
+    return "", 204
+
+
 # Banco de Dados
 
 
@@ -66,14 +75,18 @@ def save_categories_to_database():
     session["categories"] = []
     session.modified = True
 
-    return redirect(url_for("main.get_categories"))
+    return redirect(url_for("main.get_all_categories"))
 
 
-@main_bp.route("/clear-categories", methods=["GET", "POST"])
-def clear_categories():
-    session["categories"] = []
+@main_bp.route("/remove_all_categories", methods=["GET", "POST"])
+def remove_all_categories():
 
-    return "", 204
+    repository = CategoryRepository()
+    use_case = RemoveAllCategories(repository)
+
+    use_case.execute()
+
+    return redirect(url_for("main.get_all_categories"))
 
 
 @main_bp.route("/get-categories", methods=["GET", "POST"])
