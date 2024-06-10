@@ -1,0 +1,52 @@
+<h1>Categorias</h1>
+{% if categories %}
+<p>Categorias disponíveis</p>
+<section class="container">
+        {% for category in categories %}
+        <section class="cat-card">
+            <h1 class="">
+                {{ category["name"] }}
+            </h1>
+            <ul class="cat-items">
+                <li>
+                    Sem itens.
+                </li>
+            </ul>
+            <button class="add-item">
+                Adicionar Items
+            </button>
+        </section>
+        {% endfor %}
+</section>
+{% else %}
+<p>Sem categorias disponíveis.</p>
+{% endif %}
+
+{% block styles %}
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+    }
+
+    .cat-card {
+        border: 1px solid black;
+        border-radius: 5px;
+        box-shadow: 0 0 5px black;
+        padding: 1rem;
+    }
+
+    .add-item {
+        width: 100%;
+        border: none;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .add-item:hover {
+        filter: brightness(0.9);
+    }
+</style>
+{% endblock  %}

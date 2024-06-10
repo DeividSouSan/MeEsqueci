@@ -1,23 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<header class="container-fluid text-center">
-    <h1>Me Esqueci?!</h1>
-    <button type="button" class="btn btn-primary text-nowrap btn-sm" data-bs-toggle="modal"
-        data-bs-target="#exampleModal">
-        Adicionar Categorias
-    </button>
+    <header class="">
+        <h1>Me Esqueci?!</h1>
+        <button
+            type="button"
+            class="add-cat-modal-btn">
+            Adicionar Categorias
+        </button>
 
-    <button type="button" class="btn btn-success text-nowrap btn-sm" disabled>Adicionar Várias Categorias</button>
-    <button type="button" class="btn btn-danger text-nowrap btn-sm" disabled>Remover Categoria</button>
-    <button type="button" class="btn btn-danger text-nowrap btn-sm" disabled>Remover Todas Categorias</button>
-    <hr>
-</header>
+        <button
+            type="button"
+            class=""
+            disabled>
+            Adicionar Várias Categorias
+        </button>
 
-{% set form=form %}
-{% include 'partials/add-categories.html' %}
+        <button
+            type="button"
+            class=""
+            disabled>
+            Remover Categoria
+        </button>
 
-{% block script %}
+        <button
+            type="button"
+            class=""
+            hx-post="{{ url_for('main.clear_categories') }}"
+            hx-target="html"
+            >
+            Remover Todas Categorias
+        </button>
+        <hr />
+    </header>
 
-{% endblock %}
-{% endblock %}
+    {% set form=form %}
+    {% include 'partials/add-categories.html' %}
+
+    <section
+        class="categories-board-section"
+        hx-post="{{ url_for('main.get_all_categories') }}"
+        hx-target="this"
+        hx-swap="innerHTML"
+        hx-trigger="load from:#save-categories-btn"
+    >
+        {% set categories=categories %}
+        {% include'partials/categories-board.html' %}
+    </section>
+
+{%endblock %}

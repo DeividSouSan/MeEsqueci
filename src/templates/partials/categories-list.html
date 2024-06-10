@@ -1,5 +1,5 @@
 <ul id="categories-list">
-    {% for item in categories %}
-        <li>{{ item }}</li>
+    {% for category in categories %}
+        <li>{{ category["name"] }}</li>
     {% endfor %}
 </ul>

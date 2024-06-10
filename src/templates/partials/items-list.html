@@ -1,0 +1,13 @@
+
+<ul class="cat-items">
+    {% if items %}
+        {% for item in items %}
+            <li contenteditable="true">
+                {{ item }}
+            </li>
+        {% endfor %}
+    {% endfor %}
+    <li>
+        Sem itens.
+    </li>
+</ul>

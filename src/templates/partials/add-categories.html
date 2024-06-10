@@ -1,55 +1,162 @@
-<div class="add-cat-modal modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal-background" style="display: none;">
+    <div class="modal-dialog" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicione uma ou mais categorias</h1>
-                <button type="button" class="close-btn btn-close" data-bs-dismiss="modal" aria-label="Close" hx-post="{{ url_for('main.clear_session') }}"></button>
+                <h1>Adicione uma ou mais categorias</h1>
+                <button
+                    type="button"
+                    class="modal-hd-close-btn"
+                >
+
+                </button>
             </div>
-            <div class="modal-body row align-items-start">
-                <form hx-post="{{ url_for('main.add_cat_to_session') }}" hx-target="#categories-list"
-                    hx-swap='outerHTML' class="modal-form flex-row">
+            <div class="modal-body">
+                <form
+                    class="modal-form"
+                    hx-post="{{ url_for('main.add_cat_to_session') }}"
+                    hx-target="#categories-list"
+                    hx-swap='outerHTML'>
+
                     {{form.name(placeholder='Nome da Categoria')}}
 
                     {{ form.hidden_tag() }}
 
-                    <input type="submit" value="Adicionar">
-                </form>
-                <hr>
-                <h5>Categorias Adicionadas: </h5>
+                <input type="submit" value="Adicionar">
+            </form>
 
-                <ul id="categories-list">
-                    <li>Sem categorias ainda</li>
-                </ul>
+            <hr>
+
+            <h5>Categorias Adicionadas: </h5>
+            <ul id="categories-list">
+                <li>Sem categorias ainda</li>
+            </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">
-                    Save changes
-                </button>
+            <button
+                type="button"
+                id="close-modal-ft-btn"
+                hx-post="{{ url_for('main.clear_categories') }}"
+                >Close
+            </button>
+            <button
+                type="button"
+                id="save-categories-btn"
+                hx-post="{{ url_for('main.save_categories_to_database') }}"
+                hx-target=".categories-board-section">
+            Save changes
+        </button>
             </div>
         </div>
     </div>
 </div>
 
 {% block script %}
-    <script>
-        const modal = document.querySelector('.add-cat-modal');
-        const modalCloseBtn = document.querySelector(".close-btn");
+<script>
+    const addModalBtn = document.querySelector('.add-cat-modal-btn');
+    const modal = document.querySelector('.modal-dialog');
+    const modalHdCloseBtn = document.querySelector(".modal-hd-close-btn");
+    const closeModalFtBtn = document.querySelector("#close-modal-ft-btn");
+    const saveCategoriesBtn = document.querySelector("#save-categories-btn");
+
+    addModalBtn.addEventListener('click', () => {
+        const modalBackground = document.querySelector('.modal-background');
+        const modalDialog = document.querySelector('.modal-dialog');
+
+        modalBackground.style.display = 'block';
+        modalDialog.style.display = 'block';
+    })
+
+    modalHdCloseBtn.addEventListener('click', () => {
+        const modalBackground = document.querySelector('.modal-background');
+        const modalDialog = document.querySelector('.modal-dialog');
+
+        modalBackground.style.display = 'none';
+        modalDialog.style.display = 'none';
+    })
+
+    saveCategoriesBtn.addEventListener('click', () => {
+        const modalForm = modal.querySelector('.modal-form');
+        modalForm.reset();
+
+        const catList = document.querySelector("#categories-list");
+        catList.innerHTML = ""
+
+        const baseListItem = document.createElement('li');
+        baseListItem.innerText = "Não possui caregorias ainda";
+
+        catList.appendChild(baseListItem);
+
+        const modalBackground = document.querySelector('.modal-background');
+        const modalDialog = document.querySelector('.modal-dialog');
+
+        modalBackground.style.display = 'none';
+        modalDialog.style.display = 'none';
+    })
+
+    closeModalFtBtn.addEventListener('click', () => {
+        const modalForm = modal.querySelector('.modal-form');
+        modalForm.reset();
+
+        const catList = document.querySelector("#categories-list");
+        catList.innerHTML = ""
+
+        const baseListItem = document.createElement('li');
+        baseListItem.innerText = "Não possui caregorias ainda";
+
+        catList.appendChild(baseListItem);
+
+        const modalBackground = document.querySelector('.modal-background');
+        const modalDialog = document.querySelector('.modal-dialog');
+
+        modalBackground.style.display = 'none';
+        modalDialog.style.display = 'none';
 
 
-        modalCloseBtn.addEventListener('click', () => {
-            const modalForm = modal.querySelector('.modal-form');
-            modalForm.reset();
+    })
+</script>
+{% endblock %}
 
-            const catList = document.querySelector("#categories-list");
-            catList.innerHTML = ""
+{% block styles %}
+<style>
+    .modal-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-dialog {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        background-color: white;
+        box-shadow: 1px 1px 5px black;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 1rem;
+    }
 
-            const baseListItem = document.createElement('li');
-            baseListItem.innerText = "Não possui caregorias ainda";
+    .modal-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
-            catList.appendChild(baseListItem);
+        > h1 {
+            font-size: 1.5rem;
+        }
 
-            console.log("supostamente deu certo");
-        })
-    </script>
-{% endblock  %}
+        > .modal-hd-close-btn {
+            background-image: url("../static/img/close.svg");
+            background-position: center;
+            background-size: cover;
+            width: 32px;
+            height: 32px;
+            margin-left: 1rem;
+        }
+    }
+</style>
+{% endblock %}
